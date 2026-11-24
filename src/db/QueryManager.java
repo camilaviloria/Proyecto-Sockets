@@ -33,7 +33,7 @@ public class QueryManager {
                 return;
             }
 
-            Reader reader = new InputStreamReader(inputStream);
+            Reader reader = new InputStreamReader(inputStream); // Creamos un Reader para leer el InputStream que es el archivo JSON
             
             // Gson lee el JSON y lo convierte en un Map<String, String>
             this.queries = new Gson().fromJson(reader, new TypeToken<Map<String, String>>(){}.getType());

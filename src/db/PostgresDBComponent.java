@@ -24,17 +24,16 @@ public class PostgresDBComponent implements DBComponent {
     @Override
     public void conectar() {
         try {
-            // ATENCIÓN: Cambia "postgres", "admin" y "instagram" por tus credenciales reales
-            String url = "jdbc:postgresql://localhost:5432/instagram";
-            String usuario = "postgres";
-            String password = "admin";
+            String url = "jdbc:postgresql://localhost:5432/Instagram";
+            String usuario = "postgres"; 
+            String password = "13082006"; 
             
             this.conexion = DriverManager.getConnection(url, usuario, password);
             // Desactivamos el autocommit para poder usar transacciones (COMMIT / ROLLBACK)
             this.conexion.setAutoCommit(false); 
-            System.out.println("✅ Conexión exitosa a PostgreSQL.");
+            System.out.println("Conexión exitosa a PostgreSQL.");
         } catch (SQLException e) {
-            System.err.println("❌ Error de conexión a la BD: " + e.getMessage());
+            System.err.println(" Error de conexión a la BD: " + e.getMessage());
         }
     }
 
@@ -43,7 +42,7 @@ public class PostgresDBComponent implements DBComponent {
         try {
             if (conexion != null && !conexion.isClosed()) {
                 conexion.close();
-                System.out.println("🔌 Desconectado de la BD.");
+                System.out.println(" Desconectado de la BD.");
             }
         } catch (SQLException e) {
             System.err.println("Error al desconectar: " + e.getMessage());
@@ -87,7 +86,7 @@ public class PostgresDBComponent implements DBComponent {
     public boolean insertar(String queryName, Map<String, Object> parametros) {
         String sql = queryManager.getQuery(queryName);
         if (sql == null) {
-            System.err.println("❌ Error: La query '" + queryName + "' no existe en el JSON.");
+            System.err.println(" Error: La query '" + queryName + "' no existe en el JSON.");
             return false;
         }
 
@@ -100,7 +99,7 @@ public class PostgresDBComponent implements DBComponent {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.err.println("❌ Error al ejecutar insertar (" + queryName + "): " + e.getMessage());
+            System.err.println("Error al ejecutar insertar (" + queryName + "): " + e.getMessage());
             return false;
         }
     }
@@ -118,7 +117,7 @@ public class PostgresDBComponent implements DBComponent {
     public <T> List<T> buscarTodos(String queryName, Map<String, Object> parametros, Class<T> clase) {
         String sql = queryManager.getQuery(queryName);
         if (sql == null) {
-            System.err.println("❌ Error: La query '" + queryName + "' no existe en el JSON.");
+            System.err.println("Error: La query '" + queryName + "' no existe en el JSON.");
             return new ArrayList<>();
         }
 
@@ -160,7 +159,7 @@ public class PostgresDBComponent implements DBComponent {
                 }
             }
         } catch (Exception e) {
-            System.err.println("❌ Error al ejecutar búsqueda (" + queryName + "): " + e.getMessage());
+            System.err.println("Error al ejecutar búsqueda (" + queryName + "): " + e.getMessage());
         }
 
         return listaResultados;

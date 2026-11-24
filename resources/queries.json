@@ -1,5 +1,5 @@
 {
-  "insertar_usuario": "INSERT INTO usuario (tipo_usuario_id, username, email, password_hash) VALUES (?, ?, ?, ?) RETURNING id",
+  "insertar_usuario": "INSERT INTO usuario (tipo_usuario_id, username, email, password_hash) VALUES (?, ?, ?, ?)",
   "buscar_usuario_por_username": "SELECT * FROM usuario WHERE username = ?",
   "insertar_publicacion": "INSERT INTO publicacion (usuario_id, tipo_publicacion_id, url_contenido, caption) VALUES (?, ?, ?, ?)",
   "insertar_like": "INSERT INTO likes (usuario_id, publicacion_id) VALUES (?, ?)",
