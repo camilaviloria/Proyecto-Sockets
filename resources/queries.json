@@ -1,0 +1,9 @@
+{
+  "insertar_usuario": "INSERT INTO usuario (tipo_usuario_id, username, email, password_hash) VALUES (?, ?, ?, ?)",
+  "buscar_usuario_por_username": "SELECT * FROM usuario WHERE username = ?",
+  "insertar_publicacion": "INSERT INTO publicacion (usuario_id, tipo_publicacion_id, url_contenido, caption) VALUES (?, ?, ?, ?)",
+  "insertar_like": "INSERT INTO likes (usuario_id, publicacion_id) VALUES (?, ?)",
+  "insertar_comentario": "INSERT INTO comentario (usuario_id, publicacion_id, texto) VALUES (?, ?, ?)",
+  "insertar_seguidor": "INSERT INTO usuario_sigue (seguidor_id, seguido_id) VALUES (?, ?)",
+  "insertar_mensaje": "INSERT INTO mensaje (emisor_id, receptor_id, contenido) VALUES (?, ?, ?)"
+}
