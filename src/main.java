@@ -1,40 +1,36 @@
 import db.DBComponent;
 import db.PostgresDBComponent;
+import db.MySQLDBComponent;
 import service.RedSocialService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class main {
     public static void main(String[] args) {
-        // 1. Instanciar e iniciar el componente
-        DBComponent db = new PostgresDBComponent();
-        db.conectar();
+        
+        // =================================================================
+        // DEMOSTRACION 1: USANDO POSTGRESQL (El motor real)
+        // =================================================================
+        System.out.println("=== INICIANDO PRUEBA CON POSTGRESQL ===");
+        DBComponent dbPostgres = new PostgresDBComponent();
+        dbPostgres.conectar();
+        
+        RedSocialService servicePostgres = new RedSocialService(dbPostgres);
+        servicePostgres.registrarUsuario("juan_perez", "juan@mail.com", "hash123", 1); // Exito
+        servicePostgres.registrarUsuario("juan_perez", "juan2@mail.com", "hash456", 1); // Rollback
+        
+        dbPostgres.desconectar();
 
-        // 2. Instanciar el servicio
-        RedSocialService service = new RedSocialService(db);
 
-        // 3. PRUEBA 1: Registro exitoso (COMMIT)
-        service.registrarUsuario("camila_99", "camila@mail.com", "hash123", 1);
-
-        // 4. PRUEBA 2: Error por duplicado (ROLLBACK)
-        // Intentamos registrar el mismo usuario otra vez
-        service.registrarUsuario("camila_99", "otro_correo@mail.com", "hash456", 1);
-
-        // 5. PRUEBA 3: Insertar un Like
-        // (Asumiendo que el usuario_id 1 existe y publicacion_id 1 existe en tu BD)
-        // Si no existen, el like fallará por llave foránea
-        // service.darLike(1, 1);
-
-        // 6. PRUEBA 4: Consultar todos los usuarios (Usando Reflexión)
-        System.out.println("\n--- CONSULTANDO USUARIOS EN LA BD ---");
-        Map<String, Object> paramsVacios = new HashMap<>();
-        // Usamos una query que traiga todo (debes agregarla a tu queries.json)
-        // List<Usuario> usuarios = db.buscarTodos("buscar_todos_usuarios", paramsVacios, Usuario.class);
-        // for(Usuario u : usuarios) {
-        //     System.out.println(u);
-        // }
-
-        db.desconectar();
+        // =================================================================
+        // DEMOSTRACION 2: USANDO MYSQL (El componente simulado por desacoplamiento)
+        // =================================================================
+        System.out.println("\n\n=== INICIANDO PRUEBA CON MYSQL (DESACOPLADO) ===");
+        DBComponent dbMySQL = new MySQLDBComponent();
+        dbMySQL.conectar();
+        
+        RedSocialService serviceMySQL = new RedSocialService(dbMySQL);
+        // El mismo servicio, la misma logica, pero con otro motor
+        serviceMySQL.registrarUsuario("maria_gomez", "maria@mail.com", "pass123", 1); 
+        
+        dbMySQL.desconectar();
     }
 }

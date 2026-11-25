@@ -1,7 +1,6 @@
 package service;
-
 import db.DBComponent;
-import modelo.Usuario;
+import modelo.Contador;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,27 +10,25 @@ public class RedSocialService {
     public RedSocialService(DBComponent db) {
         this.db = db;
     }
-
-    /**
-     * Simula el registro de un usuario validando que no exista previamente.
-     * (Transacción de la pizarra 2)
-     */
-    public void registrarUsuario(String username, String email, String password, int tipoUsuarioId) {
-        System.out.println("\n--- INICIANDO TRANSACCIÓN: REGISTRO DE USUARIO ---");
+           public void registrarUsuario(String username, String email, String password, int tipoUsuarioId) {
+        System.out.println("\n--- INICIANDO TRANSACCION: REGISTRO DE USUARIO ---");
         db.beginTransaction();
         
         try {
-            // 1. Verificar si el usuario ya existe
+            // 1. Verificar si el usuario ya existe usando la clase Contador
             Map<String, Object> paramsBusqueda = new HashMap<>();
             paramsBusqueda.put("username", username);
-            Usuario usuarioExistente = db.buscarUno("buscar_usuario_por_username", paramsBusqueda, Usuario.class);
-
-            if (usuarioExistente != null) {
-                throw new Exception("El username '" + username + "' ya está en uso.");
+            
+            Contador resultado = db.buscarUno("contar_usuario_por_username", paramsBusqueda, Contador.class);
+            
+            System.out.println("DEBUG: Resultado de la BD: " + (resultado != null ? resultado.getTotal() : "null"));
+            
+            if (resultado != null && resultado.getTotal() > 0) {
+                throw new Exception("El username '" + username + "' ya esta en uso.");
             }
 
             // 2. Insertar el nuevo usuario
-            Map<String, Object> paramsInsert = new HashMap<>();
+            Map<String, Object> paramsInsert = new java.util.LinkedHashMap<>();
             paramsInsert.put("tipo_usuario_id", tipoUsuarioId);
             paramsInsert.put("username", username);
             paramsInsert.put("email", email);
@@ -43,22 +40,18 @@ public class RedSocialService {
                 throw new Exception("Error al insertar en la base de datos.");
             }
 
-            // 3. Si todo sale bien, confirmamos la transacción
+            // 3. Si todo sale bien, confirmamos
             db.commit();
-            System.out.println(" Transacción EXITOSA: Usuario '" + username + "' registrado.");
+            System.out.println("Transaccion EXITOSA: Usuario '" + username + "' registrado.");
 
         } catch (Exception e) {
-            // 4. Si algo falla, deshacemos todo
+            // 4. Si falla, deshacemos
             db.rollback();
-            System.err.println(" Transacción FALLIDA (ROLLBACK): " + e.getMessage());
+            System.err.println("Transaccion FALLIDA (ROLLBACK): " + e.getMessage());
         }
     }
-
-    /**
-     * Simula dar un Like (Transacción simple)
-     */
     public void darLike(int usuarioId, int publicacionId) {
-        System.out.println("\n--- INICIANDO TRANSACCIÓN: DAR LIKE ---");
+        System.out.println("\n--- INICIANDO TRANSACCION: DAR LIKE ---");
         db.beginTransaction();
         try {
             Map<String, Object> params = new HashMap<>();
@@ -67,10 +60,10 @@ public class RedSocialService {
             
             db.insertar("insertar_like", params);
             db.commit();
-            System.out.println(" Like registrado con éxito.");
+            System.out.println("Like registrado con exito.");
         } catch (Exception e) {
             db.rollback();
-            System.err.println(" Error al dar like: " + e.getMessage());
+            System.err.println("Error al dar like: " + e.getMessage());
         }
     }
 }
