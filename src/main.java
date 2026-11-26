@@ -1,13 +1,13 @@
 import db.DBComponent;
 import db.PostgresDBComponent;
-import db.MySQLDBComponent;
+import db.SQLServerDBComponent;
 import service.RedSocialService;
 
 public class main {
     public static void main(String[] args) {
         
         // =================================================================
-        // DEMOSTRACION 1: USANDO POSTGRESQL (El motor real)
+        // DEMOSTRACION 1: POSTGRESQL
         // =================================================================
         System.out.println("=== INICIANDO PRUEBA CON POSTGRESQL ===");
         DBComponent dbPostgres = new PostgresDBComponent();
@@ -19,18 +19,17 @@ public class main {
         
         dbPostgres.desconectar();
 
-
         // =================================================================
-        // DEMOSTRACION 2: USANDO MYSQL (El componente simulado por desacoplamiento)
+        // DEMOSTRACION 2: SQL SERVER
         // =================================================================
-        System.out.println("\n\n=== INICIANDO PRUEBA CON MYSQL (DESACOPLADO) ===");
-        DBComponent dbMySQL = new MySQLDBComponent();
-        dbMySQL.conectar();
+        System.out.println("\n=== INICIANDO PRUEBA CON SQL SERVER ===");
+        DBComponent dbSQLServer = new SQLServerDBComponent();
+        dbSQLServer.conectar();
         
-        RedSocialService serviceMySQL = new RedSocialService(dbMySQL);
-        // El mismo servicio, la misma logica, pero con otro motor
-        serviceMySQL.registrarUsuario("maria_gomez", "maria@mail.com", "pass123", 1); 
+        RedSocialService serviceSQLServer = new RedSocialService(dbSQLServer);
+        serviceSQLServer.registrarUsuario("pedro_gomez", "pedro@mail.com", "pass789", 1); // Exito
+        serviceSQLServer.registrarUsuario("pedro_gomez", "pedro2@mail.com", "pass000", 1); // Rollback
         
-        dbMySQL.desconectar();
+        dbSQLServer.desconectar();
     }
 }

@@ -15,7 +15,6 @@ public class RedSocialService {
         db.beginTransaction();
         
         try {
-            // 1. Verificar si el usuario ya existe usando la clase Contador
             Map<String, Object> paramsBusqueda = new HashMap<>();
             paramsBusqueda.put("username", username);
             
@@ -27,7 +26,6 @@ public class RedSocialService {
                 throw new Exception("El username '" + username + "' ya esta en uso.");
             }
 
-            // 2. Insertar el nuevo usuario
             Map<String, Object> paramsInsert = new java.util.LinkedHashMap<>();
             paramsInsert.put("tipo_usuario_id", tipoUsuarioId);
             paramsInsert.put("username", username);
@@ -40,12 +38,10 @@ public class RedSocialService {
                 throw new Exception("Error al insertar en la base de datos.");
             }
 
-            // 3. Si todo sale bien, confirmamos
             db.commit();
             System.out.println("Transaccion EXITOSA: Usuario '" + username + "' registrado.");
 
         } catch (Exception e) {
-            // 4. Si falla, deshacemos
             db.rollback();
             System.err.println("Transaccion FALLIDA (ROLLBACK): " + e.getMessage());
         }
