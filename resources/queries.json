@@ -1,9 +1,9 @@
 {
+  "contar_usuario_por_username": "SELECT COUNT(*) AS total FROM usuario WHERE username = ?",
   "insertar_usuario": "INSERT INTO usuario (tipo_usuario_id, username, email, password_hash) VALUES (?, ?, ?, ?)",
-  "buscar_usuario_por_username": "SELECT * FROM usuario WHERE username = ?",
-  "contar_usuario_por_username": "SELECT COUNT(*) as total FROM usuario WHERE username = ?",
-  "insertar_publicacion": "INSERT INTO publicacion (usuario_id, tipo_publicacion_id, url_contenido, caption) VALUES (?, ?, ?, ?)",
+  "obtener_usuario_por_username": "SELECT id, username, email, biografia FROM usuario WHERE username = ?",
+  "insertar_publicacion": "INSERT INTO publicacion (usuario_id, tipo_publicacion_id, url_contenido, caption, ubicacion) VALUES (?, ?, ?, ?, ?)",
+  "obtener_publicacion_por_id": "SELECT id, usuario_id, tipo_publicacion_id, url_contenido, caption, ubicacion FROM publicacion WHERE id = ?",
   "insertar_like": "INSERT INTO likes (usuario_id, publicacion_id) VALUES (?, ?)",
-  "insertar_comentario": "INSERT INTO comentario (usuario_id, publicacion_id, texto) VALUES (?, ?, ?)",
-  "insertar_seguidor": "INSERT INTO usuario_sigue (seguidor_id, seguido_id) VALUES (?, ?)"
+  "contar_likes_publicacion": "SELECT COUNT(*) AS total FROM likes WHERE publicacion_id = ?",  "enviar_mensaje": "INSERT INTO mensaje (emisor_id, receptor_id, contenido) VALUES (?, ?, ?)"
 }
